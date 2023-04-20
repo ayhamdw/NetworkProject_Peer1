@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="918.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hw2client.HelloController">
+   <children>
+      <Label layoutX="29.0" layoutY="38.0" text="username">
+         <font>
+            <Font name="Cambria" size="17.0" />
+         </font>
+      </Label>
+      <TextField layoutX="112.0" layoutY="37.0" />
+      <JFXButton layoutX="283.0" layoutY="33.0" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: green;" text="login">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="363.0" layoutY="33.0" prefHeight="30.0" prefWidth="73.0" style="-fx-background-color: red;" text="logout">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXListView fx:id="MessageView" editable="true" layoutX="29.0" layoutY="89.0" prefHeight="275.0" prefWidth="395.0" />
+      <JFXTextArea fx:id="MessageArea" layoutX="29.0" layoutY="370.0" prefHeight="121.0" prefWidth="395.0" promptText="Write Your message Here!" text="&#10;" unFocusColor="#434343" />
+      <Label layoutX="29.0" layoutY="516.0" prefHeight="22.0" prefWidth="56.0" text="Status">
+         <font>
+            <Font name="Cambria Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="StatusView" editable="false" layoutX="85.0" layoutY="509.0" prefHeight="37.0" prefWidth="340.0" />
+      <Label layoutX="453.0" layoutY="40.0" text="TCP Server IP:">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="566.0" layoutY="38.0" prefHeight="25.0" prefWidth="119.0" />
+      <Label layoutX="453.0" layoutY="79.0" text="TCP Server Port:">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="566.0" layoutY="77.0" prefHeight="25.0" prefWidth="119.0" />
+      <JFXComboBox layoutX="448.0" layoutY="143.0" prefHeight="37.0" prefWidth="237.0" />
+      <Label layoutX="453.0" layoutY="123.0" text="Avilable Interfaces: ">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="453.0" layoutY="214.0" text="Local IP: ">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="LocalIP" editable="false" layoutX="543.0" layoutY="212.0" prefHeight="25.0" prefWidth="140.0" />
+      <Label layoutX="453.0" layoutY="253.0" text="Local Port:">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="LocalPort" editable="false" layoutX="543.0" layoutY="251.0" prefHeight="25.0" prefWidth="140.0" />
+      <Label layoutX="453.0" layoutY="292.0" text="Remote IP:">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="RemoteIP" layoutX="543.0" layoutY="290.0" prefHeight="25.0" prefWidth="140.0" />
+      <Label layoutX="453.0" layoutY="331.0" text="Remote Port:">
+         <font>
+            <Font name="Cambria" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="RemotePort" layoutX="543.0" layoutY="329.0" prefHeight="25.0" prefWidth="140.0" />
+      <JFXButton fx:id="SendButton" layoutX="456.0" layoutY="391.0" onAction="#SendButton" prefHeight="51.0" prefWidth="98.0" style="-fx-background-color: green;" text="Send">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="456.0" layoutY="471.0" onAction="#TestButton" prefHeight="51.0" prefWidth="98.0" style="-fx-background-color: red;" text="Test">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="579.0" layoutY="391.0" onAction="#ClearButton" prefHeight="51.0" prefWidth="92.0" style="-fx-background-color: brown;" text="Clear">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="580.0" layoutY="471.0" onAction="#ClearAllButton" prefHeight="51.0" prefWidth="92.0" style="-fx-background-color: yellow;" text="Clear All">
+         <font>
+            <Font name="Cambria Bold" size="15.0" />
+         </font>
+      </JFXButton>
+      <JFXListView editable="true" layoutX="708.0" layoutY="40.0" prefHeight="502.0" prefWidth="196.0" />
+      <Label layoutX="709.0" layoutY="14.0" text="Online User:">
+         <font>
+            <Font name="Cambria" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
