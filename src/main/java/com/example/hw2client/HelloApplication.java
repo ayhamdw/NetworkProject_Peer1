@@ -31,9 +31,9 @@ public class HelloApplication extends Application{
         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Parent root = loader.load();
         HelloController load = loader.getController();
+        byte[] receiveData = new byte[1024];
         ObservableList<Label> items = load.MessageView.getItems();
         DatagramSocket serverSocket = new DatagramSocket(9876);
-        byte[] receiveData = new byte[1024];
         new Thread(() -> {
             try {
                 while (true) {
@@ -43,26 +43,31 @@ public class HelloApplication extends Application{
                     serverSocket.receive(receivePacket);
                     InetAddress IPAddress = receivePacket.getAddress(); // the address of client
                     String result = new String(receivePacket.getData(), 0, receivePacket.getLength(), StandardCharsets.UTF_8);
-                    try {
-                        int index = Integer.parseInt(result);
-                        if (index >= 0) {
-                            Platform.runLater(() -> items.remove(index));
+                    if (result.equals("Clear")) {
+                        Platform.runLater(() -> items.clear());
+                    } else {
+                        try {
+                            int index = Integer.parseInt(result);
+                            if (index >= 0) {
+                                Platform.runLater(() -> items.remove(index));
+                            }
+                        } catch (Exception ex) {
+                            Label label = new Label(result + " (" + now.format(dtf) + ")");
+                            label.setTextFill(Color.GREEN);
+                            label.setStyle("-fx-font-family: Cambria;");
+                            Platform.runLater(() -> items.add(label));
                         }
                     }
-                    catch (Exception ex) {
-                        Label label = new Label(result +" (" + now.format(dtf) +")");
-                        label.setTextFill(Color.GREEN);
-                        label.setStyle("-fx-font-family: Cambria;");
-                        Platform.runLater(() -> items.add(label));
-                    }
                 }
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }).start();
         Scene scene = new Scene(root, 918, 566);
-        stage.setTitle("Hello!");
+        stage.setTitle("Server");
         stage.setScene(scene);
+        //stage.setResizable(false);
         stage.show();
     }
 

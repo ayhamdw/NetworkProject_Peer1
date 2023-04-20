@@ -43,8 +43,14 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void ClearAllButton(ActionEvent event) {
-
+    void ClearAllButton(ActionEvent event) throws IOException {
+        DatagramSocket clientSocket = new DatagramSocket();
+        byte[] sendData = new byte[1024];
+        sendData = ("Clear").getBytes();
+        InetAddress address = InetAddress.getByName(RemoteIP.getText()); // get the destination ip
+        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, Integer.parseInt(RemotePort.getText()));
+        clientSocket.send(sendPacket);
+        MessageView.getItems().clear();
     }
     @FXML
     void ClearButton(ActionEvent event) throws IOException {
