@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,58 +20,65 @@ import java.util.Random;
 public class HelloApplication extends Application{
     public void startServerLogic(HelloController controller) {
         byte[] receiveData = new byte[1024];
-        ObservableList<Label> items = controller.MessageView.getItems();
+        ObservableList<Label> items = controller.messageView.getItems();
         ObservableList<String> items1 = controller.onlineUsers.getItems();
         new Thread(() -> {
             try {
                 Random random = new Random();
                 int port = random.nextInt(65535)+1;
                 System.out.println(port);
-                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-                Parent root = loader.load();
-                HelloController load = loader.getController();
-                DatagramSocket serverSocket = new DatagramSocket((port));
-                while (true) {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-                    LocalDateTime now = LocalDateTime.now();
-                    DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-                    serverSocket.receive(receivePacket);
-                    InetAddress IPAddress = receivePacket.getAddress(); // the address of client
-                    String result = new String(receivePacket.getData(), 0, receivePacket.getLength(), StandardCharsets.UTF_8);
-                    if (result.contains("Logout,Now")){
-                        JOptionPane.showMessageDialog(null, "Inside");
-                        String [] strings = result.split("\n");
-                        JOptionPane.showMessageDialog(null , strings[1]);
-                        for (int i = 0; i < items1.size(); i++){
-                            if(items1.get(i).contains(strings[1])) {
-                                int finalI = i;
-                                Platform.runLater(()->items1.remove(finalI));
-                            }
-                        }
-                    }
-                    else if (result.contains(":")) {
-                        Refactor(items, dtf, now, result);
-                    } else if (result.contains(",") && result.length() > 10) {
-                        int flag = 1;
-                        if (items1.size() == 0) {
-                            Platform.runLater(()-> items1.add(result));
-                        }
-                        else {
-                            for (int i = 0; i < items1.size(); i++) {
-                                if (controller.onlineUsers.getItems().get(i).equals(result)) {
-                                    flag = 0;
-                                    break;
-                                }
-                            }
-                            if (flag == 1)
-                                Platform.runLater(() -> items1.add(result));
-                        }
-                    } else if (result.equals("Clear")) {
-                        Platform.runLater(() -> items.clear());
-                    } else {
-                        Refactor(items, dtf, now, result);
-                    }
-                }
+
+                 try (DatagramSocket serverSocket = new DatagramSocket((port))) {
+                     while (true) {
+                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+                         LocalDateTime now = LocalDateTime.now();
+                         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                         serverSocket.receive(receivePacket);
+                         String result = new String(receivePacket.getData(), 0, receivePacket.getLength(), StandardCharsets.UTF_8);
+                         try {
+                             int index = Integer.parseInt(result);
+                             if (index >= 0) {
+                                 Platform.runLater(() -> items.remove(index));
+                             }
+                         }catch (Exception ex) {
+                             if (result.contains("Logout,Now")){
+                                 JOptionPane.showMessageDialog(null, "Inside");
+                                 String [] strings = result.split("\n");
+                                 JOptionPane.showMessageDialog(null , strings[1]);
+                                 for (int i = 0; i < items1.size(); i++){
+                                     if(items1.get(i).contains(strings[1])) {
+                                         int finalI = i;
+                                         Platform.runLater(()->items1.remove(finalI));
+                                     }
+                                 }
+                             }
+                             else if (result.contains(":")) {
+                                 Refactor(items, dtf, now, result);
+                             } else if (result.contains(",") && result.length() > 10) {
+                                 int flag = 1;
+                                 if (items1.size() == 0) {
+                                     Platform.runLater(()-> items1.add(result));
+                                 }
+                                 else {
+                                     for (int i = 0; i < items1.size(); i++) {
+                                         if (controller.onlineUsers.getItems().get(i).equals(result)) {
+                                             flag = 0;
+                                             break;
+                                         }
+                                     }
+                                     if (flag == 1)
+                                         Platform.runLater(() -> items1.add(result));
+                                 }
+                             } else if (result.equals("Clear")) {
+                                 Platform.runLater(items::clear);
+                             } else {
+                                 Refactor(items, dtf, now, result);
+                             }
+                         }
+
+                     }
+                 }
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -107,6 +113,6 @@ public class HelloApplication extends Application{
     }
 
     public static void main(String[] args) {
-         launch();
+        launch();
     }
 }
